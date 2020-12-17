@@ -130,14 +130,14 @@ jobs:
       uses: actions/upload-artifact@main
       if: env.UPLOAD_DL == 'true'
       with:
-        name: OpenWrt_dl_$REPO_BRANCH
+        name: OpenWrt_dl_${{REPO_BRANCH}}
         path: openwrt/dl
 
     - name: Upload feeds directory
       uses: actions/upload-artifact@main
       if: env.UPLOAD_FEEDS == 'true'
       with:
-        name: OpenWrt_feeds_$REPO_BRANCH
+        name: OpenWrt_feeds_${{REPO_BRANCH}}
         path: openwrt/feeds
 
     - name: Organize files
