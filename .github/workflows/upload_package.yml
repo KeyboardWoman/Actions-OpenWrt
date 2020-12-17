@@ -184,16 +184,16 @@ jobs:
 
     - name: Upload dl to cowtransfer
       id: dl_cowtransfer
-      if: steps.dl_organize.outputs.status == 'success' && env.UPLOAD_DL == 'true' && !cancelled()
+      if: steps.dl_organize.outputs.status == 'success' && env.UPLOAD_DL == 'true' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
       run: |
-        curl -fsSL git.io/file-transfer | sh
+        curl -fsSL git.io/file-transfer | shenv.UPLOAD_COWTRANSFER == 'true' && 
         ./transfer cow --block 2621440 -s -p 64 --no-progress ${DL} 2>&1 | tee cowtransfer.log
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
         echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
 
     - name: Upload dl to WeTransfer
       id: dl_wetransfer
-      if: steps.dl_organize.outputs.status == 'success' && env.UPLOAD_DL == 'true' && !cancelled()
+      if: steps.dl_organize.outputs.status == 'success' && env.UPLOAD_DL == 'true' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress ${DL} 2>&1 | tee wetransfer.log
