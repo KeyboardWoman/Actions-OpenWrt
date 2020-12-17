@@ -171,7 +171,7 @@ jobs:
       id: dl_cowtransfer
       if: steps.dl_organize.outputs.status == 'success' && env.UPLOAD_DL == 'true' && !cancelled()
       run: |
-        curl -fsSL git.idl_organizeo/file-transfer | sh
+        curl -fsSL git.io/file-transfer | sh
         ./transfer cow --block 2621440 -s -p 64 --no-progress ${DL} 2>&1 | tee cowtransfer.log
         echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
         echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
