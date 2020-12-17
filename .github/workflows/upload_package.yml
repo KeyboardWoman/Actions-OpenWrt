@@ -33,7 +33,7 @@ env:
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
-  UPLOAD_DL: false
+  UPLOAD_DL: true
   UPLOAD_FEEDS: true
   COMPILE_FIRMWARE: false
   TZ: Asia/Shanghai
