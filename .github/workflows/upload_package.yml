@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: upload OpenWrt dl
+name: upload OpenWrt package
 
 on:
   repository_dispatch:
@@ -34,6 +34,7 @@ env:
   UPLOAD_WETRANSFER: true
   UPLOAD_RELEASE: false
   UPLOAD_DL: true
+  UPLOAD_FEEDS: true
   COMPILE_FIRMWARE: false
   TZ: Asia/Shanghai
 
@@ -124,6 +125,20 @@ jobs:
       with:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
+
+    - name: Upload dl directory
+      uses: actions/upload-artifact@main
+      if: env.UPLOAD_DL == 'true'
+      with:
+        name: OpenWrt_dl_${REPO_BRANCH}
+        path: openwrt/dl
+
+    - name: Upload feeds directory
+      uses: actions/upload-artifact@main
+      if: env.UPLOAD_FEEDS == 'true'
+      with:
+        name: OpenWrt_feeds_${REPO_BRANCH}
+        path: openwrt/feeds
 
     - name: Organize files
       id: organize
