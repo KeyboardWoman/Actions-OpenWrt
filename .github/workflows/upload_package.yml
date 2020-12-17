@@ -31,9 +31,9 @@ env:
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: true
+  UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: false
-  UPLOAD_DL: true
+  UPLOAD_DL: false
   UPLOAD_FEEDS: true
   COMPILE_FIRMWARE: false
   TZ: Asia/Shanghai
