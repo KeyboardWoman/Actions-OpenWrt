@@ -31,7 +31,7 @@ env:
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: false
   UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
+  UPLOAD_WETRANSFER: true
   UPLOAD_RELEASE: false
   UPLOAD_DL: true
   UPLOAD_FEEDS: true
@@ -157,6 +157,14 @@ jobs:
         echo "DL=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
 
+    - name: Organize feeds files
+      id: feeds_organize
+      if: env.UPLOAD_FEEDS == 'true' && !cancelled()
+      run: |
+        cd openwrt/feeds/
+        echo "FEEDS=$PWD" >> $GITHUB_ENV
+        echo "::set-output name=status::success"
+        
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
@@ -197,6 +205,15 @@ jobs:
       run: |
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress ${DL} 2>&1 | tee wetransfer.log
+        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
+      
+    - name: Upload feeds to WeTransfer
+      id: feeds_wetransfer
+      if: steps.feeds_organize.outputs.status == 'success' && env.UPLOAD_FEEDS == 'true' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
+      run: |
+        curl -fsSL git.io/file-transfer | sh
+        ./transfer wet -s -p 16 --no-progress ${FEEDS} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
         echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
 
