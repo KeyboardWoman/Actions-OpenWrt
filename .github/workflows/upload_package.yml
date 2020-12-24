@@ -161,8 +161,9 @@ jobs:
       id: feeds_organize
       if: env.UPLOAD_FEEDS == 'true' && !cancelled()
       run: |
-        cd openwrt/feeds/
-        echo "FEEDS=$PWD" >> $GITHUB_ENV
+        cd openwrt/
+        tar czf feeds.tar.bz2 feeds
+        echo "FEEDS=feeds.tar.bz2" >> $GITHUB_ENV
         echo "::set-output name=status::success"
         
     - name: Upload firmware directory
